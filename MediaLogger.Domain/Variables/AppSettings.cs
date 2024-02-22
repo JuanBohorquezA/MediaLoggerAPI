@@ -15,7 +15,8 @@ namespace MediaLogger.Domain.Variables
         public static string VideosDirectory { get { return "Directories:Videos"; } }
         public static string LogsDirectory { get { return "Directories:Logs"; } }
         public static string connectionMongo { get {return "ConnectionStrings:MongoDb"; } }
-        public static string ConnetionSQL { get { return "ConnectionStrings:DbConnection"; } }
+        public static string ConnetionDashboardSQL { get { return "ConnectionStrings:Dashboard"; } }
+        public static string ConnetionLogsSQL { get { return "ConnectionStrings:Logs"; } }
         public static string DataBase { get { return "MongoDb:DataBase"; } }
         public static string Colletion { get { return "MongoDb:Colletion"; } }
     }

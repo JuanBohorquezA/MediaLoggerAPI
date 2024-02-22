@@ -14,7 +14,7 @@ namespace MediaLogger.Persistence.SQLServer
 
         public ClientRepository(IConfiguration configuration)
         {
-            _dataBase = configuration.GetSection(AppSettings.ConnetionSQL).Value;
+            _dataBase = configuration.GetSection(AppSettings.ConnetionDashboardSQL).Value;
         }
 
         public async Task<IEnumerable<Client>> GetAllAsync()

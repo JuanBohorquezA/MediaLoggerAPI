@@ -43,13 +43,6 @@ namespace MediaLoggerAPI.Controllers
                     return await GetResponseAsync<object?>(HttpStatusCode.Unauthorized, ResponseMessage.UNAUTHORIZED("Invalid API key"), null);
                 }
 
-                string? clientIpAddress = HttpContext.Connection.RemoteIpAddress?.ToString();
-
-                if (string.IsNullOrEmpty(login.UserName) || string.IsNullOrEmpty(login.Password))
-                {
-                    return await GetResponseAsync<object?>(HttpStatusCode.BadRequest, ResponseMessage.EMPTYFIELDS, null);
-                }
-
                 try
                 {
                     login.Password = Encryption.DecryptRSA(login.Password);
@@ -59,21 +52,17 @@ namespace MediaLoggerAPI.Controllers
                     await EventLogger.AsyncSaveLog(ETypeLogApp.Error, $"Login, Error al desencriptar la contraseña: {ex.Message}");
                     return await GetResponseAsync<string?>(HttpStatusCode.BadRequest, "Usuario y/o contraseña incorrecto", null);
                 }
-
-                if (!await _authBL.Login(login))
-                {
-                    return await GetResponseAsync<object?>(HttpStatusCode.BadRequest, ResponseMessage.Error("Username or password are incorrect"), null);
-                }
-
+                await _authBL.Login(login);
                 var token = _token.GenerateJwtToken(login);
-                
+
+                string? clientIpAddress = HttpContext.Connection.RemoteIpAddress?.ToString();
                 await EventLogger.AsyncSaveLog(ETypeLogApp.Info, $"Login, Inicio de sección. Username: {login.UserName}", clientIpAddress ?? "");
                 return await GetResponseAsync<object?>(HttpStatusCode.OK, ResponseMessage.OK("Login"), token);
             }
             catch (Exception ex) 
             {
                 await EventLogger.AsyncSaveLog(ETypeLogApp.Error, $"Login, Error: {ex.Message}");
-                return await GetResponseAsync<object?>(HttpStatusCode.InternalServerError, ResponseMessage.INTERNALSERVERERROR(ex.Message), null);
+                return await GetResponseAsync<object?>(HttpStatusCode.BadRequest, ex.Message, null);
             }
         }
 

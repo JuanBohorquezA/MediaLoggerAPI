@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MediaLogger.Domain.Entities.Business
 {
-    public class Logs
+    public class LogsMongo
     {
         public string? IP { get; set; } = string.Empty;
         public string Message { get; set; } = string.Empty;

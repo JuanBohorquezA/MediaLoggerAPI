@@ -3,6 +3,7 @@ using MediaLogger.Aplication.BL;
 using MediaLogger.Application.BL;
 using MediaLogger.Application.Validation;
 using MediaLogger.Persistence.SQLServer;
+using MediaLogger.Persistence.SQLServer.Business;
 using MediaLoggerAPI.Middleware;
 
 namespace MediaLoggerAPI.App_Start
@@ -20,13 +21,14 @@ namespace MediaLoggerAPI.App_Start
 
             services.AddScoped(typeof(AuthBL));
             services.AddScoped(typeof(PayPadBL));
+            services.AddScoped(typeof(LogBL));
             #endregion
 
             #region Validations
 
             services.AddScoped(typeof(PayPadValidation));
             services.AddScoped(typeof(AuthMiddleware));
-            services.AddScoped(typeof(MediaLoggerMidleware));
+            services.AddScoped(typeof(MediaMiddleware));
             services.AddScoped(typeof(Token));
             #endregion
 
@@ -35,6 +37,7 @@ namespace MediaLoggerAPI.App_Start
             services.AddScoped(typeof(UserRepository));
             services.AddScoped(typeof(PayPadRepository));
             services.AddScoped(typeof(ClientRepository));
+            services.AddScoped(typeof(LogRepository));
             #endregion
         }
     }

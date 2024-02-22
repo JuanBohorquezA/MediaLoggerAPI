@@ -2,10 +2,10 @@
 
 namespace MediaLoggerAPI.Middleware
 {
-    public class MediaLoggerMidleware
+    public class MediaMiddleware
     {
         private Token _token;
-        public MediaLoggerMidleware(Token token) 
+        public MediaMiddleware(Token token) 
         {
             _token = token;
         }
@@ -13,7 +13,7 @@ namespace MediaLoggerAPI.Middleware
         public bool IsValidJwt(string token)
         {         
             try
-                {
+            {
                 if (string.IsNullOrEmpty(token)) return false;
                 return _token.IsJwtTokenValid(token);
             }

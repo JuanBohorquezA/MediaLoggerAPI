@@ -11,7 +11,7 @@ namespace MediaLogger.Aplication.BL
         private static string? _connectionString;
         private static MongoClientSettings? _clientSettings;
         private static IMongoDatabase? _dataBase;
-        private static IMongoCollection<Logs>? _collection;
+        private static IMongoCollection<LogsMongo>? _collection;
         public static void InitConnection(string connectionString, string DataBase, string collectionName)
         {
             _connectionString = connectionString;
@@ -20,13 +20,13 @@ namespace MediaLogger.Aplication.BL
 
             var client = new MongoClient(_clientSettings);
             _dataBase = client.GetDatabase(DataBase);
-            _collection = _dataBase.GetCollection<Logs>(collectionName);
+            _collection = _dataBase.GetCollection<LogsMongo>(collectionName);
         }
         public static async Task AsyncSaveLog(ETypeLogApp typeLog, string Message, string Ip = "")
         {
             if (_collection == null) return;
 
-            var Log = new Logs
+            var Log = new LogsMongo
             {
                 IP = Ip,
                 Message = Message,

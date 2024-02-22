@@ -9,7 +9,7 @@ namespace MediaLogger.Domain.DTOs
     public class HttpResponse<T>
     {
         #region Properties
-        public int statusCode { get; set; }
+        public int statusCode {get; set; }
         public string message { get; set; }
         public T response { get; set; }
 
