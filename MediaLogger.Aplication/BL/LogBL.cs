@@ -28,7 +28,7 @@ namespace MediaLogger.Aplication.BL
             var logDto = new LogDto
             {
                 IdPaypad = IdPaypad,
-                LogType = (int)reqLog.Logtype,
+                LogType = reqLog.Logtype.ToString(),
                 Paypad = Paypad,
                 Log = reqLog.Content,
                 DateCreated = DateTime.Now,
@@ -38,13 +38,15 @@ namespace MediaLogger.Aplication.BL
             return logInserted;
         }
 
-        public async Task<IEnumerable<Log>?>GetLogs(GetLogDto getLog)
+        public async Task<List<string?>?>GetLogs(GetLogDto getLog)
         {
             if(getLog == null) throw new Exception(ResponseMessage.EMPTYFIELDS);
             if (getLog.StartDate > getLog.FinalDate) throw new Exception(ResponseMessage.Error($"range of data is not valid"));
             IEnumerable<Log> logs = await _logRepository.GetLogsAsync(getLog);
-            if (logs == null) throw new Exception(ResponseMessage.Error($"consult date has not logs"));
-            return logs;
+            if (logs.Count() <= 0) throw new Exception(ResponseMessage.Error($"consult date has not logs"));
+            var log = logs.Select(log=>log.LOG).ToList();
+            if (log.Count() <= 0) throw new Exception("something wrong has happened");
+            return log;
             
         }
     }

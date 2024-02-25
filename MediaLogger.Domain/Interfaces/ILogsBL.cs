@@ -11,6 +11,6 @@ namespace MediaLogger.Domain.Interfaces
     public interface IlogsBL
     {
         public Task<Log?> InsertLog(SaveLogDto reqLog, int IdPaypad, string? Paypad);
-        public Task<IEnumerable<Log>?> GetLogs(GetLogDto getLog);
+        public Task<List<string?>?> GetLogs(GetLogDto getLog);
     }
 }

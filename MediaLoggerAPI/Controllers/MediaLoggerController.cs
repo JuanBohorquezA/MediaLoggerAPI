@@ -91,7 +91,7 @@ namespace MediaLoggerAPI.Controllers
 
                 Log? log = await _log.InsertLog(Log, Paypad.Id ,Paypad?.Username);
                
-                await EventLogger.AsyncSaveLog(ETypeLogApp.Info, $"SaveLog, El Log '{Log}' fue Guardado.");
+                await EventLogger.AsyncSaveLog(ETypeLogApp.Info, $"SaveLog, fue Guardado.");
                 return await GetResponseAsync<object?>(HttpStatusCode.OK, ResponseMessage.OK("Log insertion"), null);
             }
             catch (Exception ex)
