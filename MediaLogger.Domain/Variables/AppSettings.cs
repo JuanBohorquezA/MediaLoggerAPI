@@ -13,7 +13,6 @@ namespace MediaLogger.Domain.Variables
         public static string Login_Api_Key { get { return "Api-Key:Login-Key"; }  }
         public static string JwtSecret { get { return "Jwt:Secret"; } }
         public static string VideosDirectory { get { return "Directories:Videos"; } }
-        public static string LogsDirectory { get { return "Directories:Logs"; } }
         public static string connectionMongo { get {return "ConnectionStrings:MongoDb"; } }
         public static string ConnetionDashboardSQL { get { return "ConnectionStrings:Dashboard"; } }
         public static string ConnetionLogsSQL { get { return "ConnectionStrings:Logs"; } }

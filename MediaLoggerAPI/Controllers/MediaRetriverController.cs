@@ -60,8 +60,8 @@ namespace MediaLoggerAPI.Controllers
         private string GetName(string JWT, GetLogDto getLog)
         {
             var username = _token.GetNameFromToken(JWT);
-            var date = $"del-{getLog.StartDate:yyyy/mm/dd}-al-{getLog.FinalDate:yyyy/mm/dd}";
-            return $"log-{username}-{date}";
+            var date = $"del-{getLog.StartDate:yyyy/MM/dd}-al-{getLog.FinalDate:yyyy/MM/dd}";
+            return $"log-{username?.Replace("+", "")}-{date}";
         }
         private IActionResult FileContentResult(string content, string fileName)
         {
@@ -71,7 +71,7 @@ namespace MediaLoggerAPI.Controllers
         private string ConcatenateLogs(IEnumerable<string?>? logs)
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("[");
+            sb.Append("[\n");
 
             bool first = true;
             foreach (var log in logs)
@@ -84,7 +84,7 @@ namespace MediaLoggerAPI.Controllers
                 first = false;
             }
 
-            sb.Append("]");
+            sb.Append("\n]");
             return sb.ToString();
         }
         #endregion

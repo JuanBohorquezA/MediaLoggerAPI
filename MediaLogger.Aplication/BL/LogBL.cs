@@ -22,8 +22,8 @@ namespace MediaLogger.Aplication.BL
         }
         public async Task<Log?> InsertLog(SaveLogDto reqLog,int IdPaypad, string? Paypad)
         {
-            if (string.IsNullOrEmpty(reqLog.Content)) throw new Exception(ResponseMessage.EMPTYFIELDS) ;
-            if(!Enum.IsDefined(typeof(ETypeLogReq), reqLog.Logtype)) throw new Exception(ResponseMessage.Error($"'{reqLog.Logtype}' doesn't exist in the enumerable"));
+            if (string.IsNullOrEmpty(reqLog.Content)) throw new Exception(ResponseMessage.EMPTYFIELDS);
+            if(!Enum.GetNames(typeof(ETypeLogReq)).Any(x => x == reqLog.Logtype)) throw new Exception(ResponseMessage.Error($"'{reqLog.Logtype}' doesn't exist in the enumerable"));
 
             var logDto = new LogDto
             {

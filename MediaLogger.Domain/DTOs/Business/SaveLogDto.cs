@@ -9,7 +9,7 @@ namespace MediaLogger.Domain.DTOs.Business
 {
     public class SaveLogDto
     {
-        public ETypeLogReq Logtype { get; set; }
+        public string Logtype { get; set; } = string.Empty;
         public string Content {  get; set; } = string.Empty;
     }
 }
