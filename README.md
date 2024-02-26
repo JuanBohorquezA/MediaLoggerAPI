@@ -6,7 +6,7 @@ Esta API proporciona acceso a varios recursos para interactuar con el servidor, 
 
 ## Base URL
 
-La base URL para acceder a la API es: `https://localhost:7265`
+La base URL para acceder a la API es: `https://apimedialogs.e-city.co`
 
 ## Tipos de Respuesta
 
@@ -38,7 +38,7 @@ A continuación, se enumeran los endpoints disponibles junto con una breve descr
 
   ```bash
   curl -X 'POST' \
-    'https://localhost:7265/Auth/Login' \
+    'https://apimedialogs.e-city.co/Auth/Login' \
     -H 'accept: application/json' \
     -H 'API-KEY-LOGIN: 123' \
     -H 'Content-Type: application/json' \
@@ -56,41 +56,7 @@ A continuación, se enumeran los endpoints disponibles junto con una breve descr
   }
 
   
-### Endpoint 2: /MediaLogger/SaveVideo
-
-- **Descripción**: Este endpoint se utiliza para Guardar videos en el servidor.
-  
-- **Método HTTP**: POST
-  
-- **Parámetros**:
-
-  - **Header**: 
-    - `JWT` (tipo string)
-  
-  - **Body**:  
-    - `formFile` (tipo IFormFile)
-        
-- **Ejemplo de solicitud**:
-
-  ```bash
-  curl -X 'POST' \
-  'https://localhost:7265/MediaLogger/SaveVideo' \
-  -H 'accept: application/json' \
-  -H 'JWT: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IlBheSsgUHJ1ZWJhMSIsIm5iZiI6MTcwNzgyOTUxMiwiZXhwIjoxNzA3ODMzMTEyLCJpYXQiOjE3MDc4Mjk1MTJ9.bxrItCQePKfRArISGjDlqptI1N7f5RtgV9W4FSBCBDQ' \
-  -H 'Content-Type: multipart/form-data' \
-  -F 'formFile=@VideoTest.mp4;type=video/mp4'
-  
-- **Ejemplo de respuesta**:
-  
-  ```bash
-  {
-    "statusCode": 200,
-    "message": "Video sent has been successfully",
-    "response": null
-  }
-
-  
-### Endpoint 3: /MediaLogger/SaveLog
+### Endpoint 2: /MediaLogger/SaveLog
 
 - **Descripción**: Este endpoint se utiliza para Guardar Logs en el servidor.
   
@@ -102,19 +68,19 @@ A continuación, se enumeran los endpoints disponibles junto con una breve descr
     - `JWT` (tipo string)
   
   - **Body**:  
-    - `logtype` (tipo int)
+    - `logtype` (tipo string)
     - `content` (tipo string)
         
 - **Ejemplo de solicitud**:
 
   ```bash
   curl -X 'POST' \
-  'https://localhost:7265/MediaLogger/SaveVideo' \
+  'https://apimedialogs.e-city.co/MediaLogger/SaveLog' \
   -H 'accept: application/json' \
   -H 'JWT: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IlBheSsgUHJ1ZWJhMSIsIm5iZiI6MTcwNzgyOTUxMiwiZXhwIjoxNzA3ODMzMTEyLCJpYXQiOjE3MDc4Mjk1MTJ9.bxrItCQePKfRArISGjDlqptI1N7f5RtgV9W4FSBCBDQ' \
   -H 'Content-Type: multipart/form-data' \
   -d '{
-        "logtype": 0,
+        "logtype":  "string",
         "content": "string"
       }'
   
@@ -126,3 +92,42 @@ A continuación, se enumeran los endpoints disponibles junto con una breve descr
     "message": "Log sent has been successfully",
     "response": null
   }
+  
+### Endpoint 3: /MediaRetriver/DownloadLog
+- **Descripción**: Este endpoint se utiliza para descargar logs del servidor.
+  
+- **Método HTTP**: POST
+  
+- **Parámetros**:
+
+  - **Header**: 
+    - `JWT` (tipo string)
+  
+  - **Body**:
+    - `idPaypad` (tipo int)
+    - `startDate` (tipo DateTime)
+    - `finalDate` (tipo DateTime)
+        
+- **Ejemplo de solicitud**:
+
+  ```bash
+    curl -X 'POST' \
+      'https://apimedialogs.e-city.co/MediaRetriver/DownloadLog' \
+      -H 'accept: application/json' \
+      -H 'JWT: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IlBheSsgUHJ1ZWJhMSIsIm5iZiI6MTcwNzgyOTUxMiwiZXhwIjoxNzA3ODMzMTEyLCJpYXQiOjE3MDc4Mjk1MTJ9.bxrItCQePKfRArISGjDlqptI1N7f5RtgV9W4FSBCBDQ' \
+      -H 'Content-Type: application/json' \
+      -d '{
+          "idPaypad": 1005,
+          "startDate": "2024-02-23T13:35:16.151Z",
+          "finalDate": "2024-02-26T13:35:16.151Z"
+        }'
+  
+- **Ejemplo de respuesta**:
+  
+  ```bash
+   access-control-allow-origin: * 
+   content-disposition: attachment; filename="log-Pay Prueba1-del-2024/02/23-al-2024/02/26"; filename*=UTF-8''log-Pay%20Prueba1-del-2024%2F02%2F23-al-2024%2F02%2F26 
+   content-length: 244 
+   content-type: text/plain 
+   date: Mon,26 Feb 2024 13:39:44 GMT 
+   server: Kestrel 
