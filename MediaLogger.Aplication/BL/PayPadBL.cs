@@ -2,36 +2,25 @@
 using MediaLogger.Application.Validation;
 using MediaLogger.Domain;
 using MediaLogger.Domain.DTOs;
+using MediaLogger.Domain.Interfaces.Application;
+using MediaLogger.Domain.Interfaces.Persistence;
 using MediaLogger.Persistence.SQLServer;
 using Microsoft.Extensions.Configuration;
 
 namespace MediaLogger.Application.BL
 {
-    public class PayPadBL  
+    public class PayPadBL: IPayPadBL
     { 
     
         private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
-        private readonly PayPadRepository _paypadRepository;
+        private readonly IPayPadRepository _paypadRepository;
 
-        public PayPadBL(IMapper mapper, IConfiguration configuration, PayPadRepository payPadRepository)
+        public PayPadBL(IMapper mapper, IConfiguration configuration, IPayPadRepository payPadRepository)
         {
             _mapper = mapper;
             _configuration = configuration;
             _paypadRepository = payPadRepository;
-        }
-        public async Task<PayPadDto?> GetByIdAsync(int id)
-        {
-            var paypad =  _mapper.Map<PayPadDto>(await _paypadRepository.GetByIdAsync(id));
-            return paypad;
-        }
-
-
-        public async Task<List<PayPadDto>?> GetAllAsync()
-        {
-            var paypads =  _mapper.Map<List<PayPadDto>>(await _paypadRepository.GetAllAsync());
-            return paypads;
-
         }
 
         public async Task<PayPadDto?> GetByUsernameAsync(string? username)

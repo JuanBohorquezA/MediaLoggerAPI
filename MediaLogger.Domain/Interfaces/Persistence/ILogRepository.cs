@@ -6,11 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MediaLogger.Domain.Interfaces
+namespace MediaLogger.Domain.Interfaces.Persistence
 {
-    public interface IlogsBL
+    public interface ILogRepository
     {
-        public Task<Log?> InsertLog(SaveLogDto reqLog, int IdPaypad, string? Paypad);
-        public Task<List<string?>?> GetLogs(GetLogDto getLog);
+        Task<IEnumerable<Log>> GetLogsAsync(GetLogDto getLog);
+        Task<Log?> CreateLogAsync(LogDto logDto);
     }
 }

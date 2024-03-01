@@ -9,6 +9,8 @@ namespace MediaLogger.Domain
     public static class ResponseMessage
     {
         public static string EMPTYFIELDS { get { return "Complete all the fields"; } }
+
+        public static string UNAUTHORIZED = "UNAUTHORIZED";
         public static string OK(string? Message)
         {
             return $"{Message} has been successfully";
@@ -17,7 +19,7 @@ namespace MediaLogger.Domain
         {
             return $"Error, {Message}. Check it and validate again.";
         }
-        public static string UNAUTHORIZED(string? Message) 
+        public static string UNAUTHORIZED_MESSAGE(string? Message) 
         {
             return $"You are not authorized, {Message}"; 
         }

@@ -3,19 +3,18 @@ using MediaLogger.Domain.DTOs;
 using MediaLogger.Domain.DTOs.Business;
 using MediaLogger.Domain.Entities.Business;
 using MediaLogger.Domain.Enumerables;
-using MediaLogger.Domain.Interfaces;
-using MediaLogger.Persistence.SQLServer;
-using MediaLogger.Persistence.SQLServer.Business;
+using MediaLogger.Domain.Interfaces.Application;
+using MediaLogger.Domain.Interfaces.Persistence;
 using Microsoft.Extensions.Configuration;
 
 
 namespace MediaLogger.Aplication.BL
 {
-    public class LogBL: IlogsBL
+    public class LogBL: ILogBL
     {
         private readonly IConfiguration _configuration;
-        private readonly LogRepository _logRepository;
-        public LogBL(IConfiguration configuration, LogRepository logRepository) 
+        private readonly ILogRepository _logRepository;
+        public LogBL(IConfiguration configuration, ILogRepository logRepository) 
         {
             _configuration = configuration;
             _logRepository = logRepository;

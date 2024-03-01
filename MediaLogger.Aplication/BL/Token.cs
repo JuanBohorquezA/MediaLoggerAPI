@@ -1,4 +1,5 @@
 ﻿using MediaLogger.Domain.DTOs.Security;
+using MediaLogger.Domain.Interfaces.Application;
 using MediaLogger.Domain.Variables;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace MediaLogger.Aplication.BL
 {
-    public class Token
+    public class Token: ITokenBL
     {
         private readonly string _jwtSecret;
         public Token(IConfiguration configuration)

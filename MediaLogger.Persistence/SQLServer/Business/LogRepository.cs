@@ -11,10 +11,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Dapper;
 using MediaLogger.Domain.DTOs.Business;
+using MediaLogger.Domain.Interfaces.Persistence;
 
 namespace MediaLogger.Persistence.SQLServer.Business
 {
-    public class LogRepository
+    public class LogRepository: ILogRepository
     {
         private readonly string? _dataBase;
         public LogRepository(IConfiguration configuration) 

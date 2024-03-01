@@ -36,8 +36,9 @@ namespace MediaLoggerAPI
             app.UseHttpsRedirection();
             app.UseDefaultFiles();
             app.UseStaticFiles();
-            app.UseHttpsRedirection();
             app.UseAuthorization();
+
+
             app.MapControllers();
             app.Run();
         }

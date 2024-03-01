@@ -1,11 +1,15 @@
-﻿using MediaLogger.Aplication.BL;
+﻿using Dashboard.Domain.DTOs;
+using MediaLogger.Aplication.BL;
 using MediaLogger.Application.BL;
 using MediaLogger.Domain;
 using MediaLogger.Domain.DTOs;
 using MediaLogger.Domain.DTOs.Business;
 using MediaLogger.Domain.Entities.Business;
 using MediaLogger.Domain.Enumerables;
-using MediaLoggerAPI.Middleware;
+using MediaLogger.Domain.Interfaces.Application;
+using MediaLogger.Domain.Interfaces.Application.Validations;
+using MediaLogger.Domain.Variables;
+using MediaLoggerAPI.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
@@ -19,35 +23,29 @@ namespace MediaLoggerAPI.Controllers
     [Route("[controller]")]
     public class MediaRetriverController : BaseController
     {
-        private readonly MediaMiddleware _mediaLoggerMidleware;
-        private readonly LogBL _log;
-        private readonly Token _token;
-        public MediaRetriverController(MediaMiddleware mediaMiddleware, LogBL log, Token token)
+        private readonly ILogBL _log;
+        private readonly ITokenBL _token;
+        public MediaRetriverController( ILogBL log, ITokenBL token)
         {
-            _mediaLoggerMidleware = mediaMiddleware;
             _log = log;
             _token = token;
         }
         [AllowAnonymous]
         [HttpPost]
         [Route("DownloadLog")]
+        [ValidateApiKeyFilter("GetLog_Api_Key")]
         [ProducesResponseType(typeof(HttpResponse<string>), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(HttpResponse<string>), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(HttpResponse<string>), (int)HttpStatusCode.Unauthorized)]
-        [ProducesResponseType(typeof(HttpResponse<string>), (int)HttpStatusCode.InternalServerError)]
-        public async Task<IActionResult?> DownloadLog([FromHeader(Name = "JWT")] string Jwt, GetLogDto getLog)
+        [ProducesResponseType(typeof(HttpErrorResponse), (int)HttpStatusCode.InternalServerError)]
+        public async Task<IActionResult?> DownloadLog([FromHeader(Name = "X-DOWNLOAD-API-KEY")] string ApiKey, GetLogDto getLog)
         {
             try
             {
-                if (!_mediaLoggerMidleware.IsValidJwt(Jwt))
-                {
-                    return await GetResponseAsync<object?>(HttpStatusCode.Unauthorized, ResponseMessage.UNAUTHORIZED("Invalid JWT"), null);
-                }
 
                 var logs = await _log.GetLogs(getLog);
                 var logContent = ConcatenateLogs(logs);
-                var fileName = GetName(Jwt, getLog);
-                await EventLogger.AsyncSaveLog(ETypeLogApp.Info, $"GetLog, Consulta fue existosa.");
+                var fileName = GetName(ApiKey, getLog);
                 return FileContentResult(logContent, fileName);
             }
             catch (Exception ex)
@@ -57,9 +55,9 @@ namespace MediaLoggerAPI.Controllers
             }
         }
         #region Download Logs methods
-        private string GetName(string JWT, GetLogDto getLog)
+        private string GetName(string ApiKey, GetLogDto getLog)
         {
-            var username = _token.GetNameFromToken(JWT);
+            var username = _token.GetNameFromToken(ApiKey);
             var date = $"del-{getLog.StartDate:yyyy/MM/dd}-al-{getLog.FinalDate:yyyy/MM/dd}";
             return $"log-{username?.Replace("+", "")}-{date}";
         }

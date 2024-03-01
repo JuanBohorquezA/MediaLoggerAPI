@@ -1,16 +1,17 @@
-﻿using MediaLogger.Application.Validation;
-using MediaLogger.Domain;
+﻿using MediaLogger.Domain;
 using MediaLogger.Domain.DTOs;
 using MediaLogger.Domain.DTOs.Security;
+using MediaLogger.Domain.Interfaces.Application;
+using MediaLogger.Domain.Interfaces.Application.Validations;
 
 namespace MediaLogger.Application.BL
 {
-    public class AuthBL 
+    public class AuthBL : IAuthBL
     {
-        private readonly PayPadBL _payPadBL;
-        private readonly PayPadValidation _payPadValidation;
+        private readonly IPayPadBL _payPadBL;
+        private readonly IPayPadValidation _payPadValidation;
 
-        public AuthBL( PayPadBL payPadBL, PayPadValidation payPadValidation)
+        public AuthBL(IPayPadBL payPadBL, IPayPadValidation payPadValidation)
         {
             _payPadBL = payPadBL;
             _payPadValidation = payPadValidation;

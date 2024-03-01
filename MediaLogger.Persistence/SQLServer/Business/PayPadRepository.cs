@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Dashboard.Domain.Variables;
 using MediaLogger.Domain.Entities.Business;
+using MediaLogger.Domain.Interfaces.Persistence;
 using MediaLogger.Domain.Variables;
 using Microsoft.Extensions.Configuration;
 using System.Data;
@@ -8,7 +9,7 @@ using System.Data.SqlClient;
 
 namespace MediaLogger.Persistence.SQLServer
 {
-    public class PayPadRepository
+    public class PayPadRepository: IPayPadRepository
     {
         private readonly string? _dataBase;
 
@@ -26,10 +27,6 @@ namespace MediaLogger.Persistence.SQLServer
             await conn.CloseAsync();
             await conn.DisposeAsync();
             return paypad;
-        }
-        public async Task<PayPad?> GetByIdAsync(int id)
-        {
-            return (await GetAllAsync()).Where(x => x.ID == id).FirstOrDefault();
         }
 
 
