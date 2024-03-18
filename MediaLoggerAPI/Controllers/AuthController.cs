@@ -37,7 +37,7 @@ namespace MediaLoggerAPI.Controllers
         [ProducesResponseType(typeof(HttpResponse<string>), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(HttpResponse<string>), (int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType(typeof(HttpErrorResponse), (int)HttpStatusCode.InternalServerError)]
-        public async Task<IActionResult?> Login([FromHeader (Name = "X-LOGIN-API-KEY")]string apiKey, [FromBody] Login login) 
+        public async Task<IActionResult?> Login([FromHeader (Name = "API-KEY-LOGIN")]string apiKey, [FromBody] Login login) 
         {
             try
             {   

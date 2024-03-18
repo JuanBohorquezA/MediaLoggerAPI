@@ -23,12 +23,13 @@ namespace MediaLoggerAPI.Controllers
     [Route("[controller]")]
     public class MediaRetriverController : BaseController
     {
+
         private readonly ILogBL _log;
-        private readonly ITokenBL _token;
-        public MediaRetriverController( ILogBL log, ITokenBL token)
+        private readonly IPayPadBL _payPadBL;
+        public MediaRetriverController( ILogBL log, IPayPadBL payPadBL)
         {
             _log = log;
-            _token = token;
+            _payPadBL = payPadBL;
         }
         [AllowAnonymous]
         [HttpPost]
@@ -45,7 +46,7 @@ namespace MediaLoggerAPI.Controllers
 
                 var logs = await _log.GetLogs(getLog);
                 var logContent = ConcatenateLogs(logs);
-                var fileName = GetName(ApiKey, getLog);
+                var fileName = await GetName(getLog);
                 return FileContentResult(logContent, fileName);
             }
             catch (Exception ex)
@@ -55,11 +56,11 @@ namespace MediaLoggerAPI.Controllers
             }
         }
         #region Download Logs methods
-        private string GetName(string ApiKey, GetLogDto getLog)
+        private async Task<string> GetName(GetLogDto getLog)
         {
-            var username = _token.GetNameFromToken(ApiKey);
+            var payPad = await _payPadBL.GetPaypadByIdAsync(getLog.IdPaypad);
             var date = $"del-{getLog.StartDate:yyyy/MM/dd}-al-{getLog.FinalDate:yyyy/MM/dd}";
-            return $"log-{username?.Replace("+", "")}-{date}";
+            return $"log-{payPad?.Username?.Replace("+", "")}-{date}";
         }
         private IActionResult FileContentResult(string content, string fileName)
         {

@@ -9,7 +9,8 @@ namespace MediaLogger.Domain.Interfaces.Application
 {
     public interface IPayPadBL
     {
-        Task<PayPadDto?> GetByUsernameAsync(string? username);
+        Task<PayPadDto?> GetPaypadByIdAsync(int id);
+        Task<PayPadDto?> GetPaypadByUsernameAsync(string? username);
         Task<string?> GetPaypadPasswordAsync(string username);
     }
 }

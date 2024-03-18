@@ -21,7 +21,7 @@ namespace MediaLogger.Application.BL
         public async Task<bool> Login(Login loginData)
         {
             if (string.IsNullOrEmpty(loginData.UserName) || string.IsNullOrEmpty(loginData.Password)) throw new Exception(ResponseMessage.EMPTYFIELDS);
-            PayPadDto? paypad = await _payPadBL.GetByUsernameAsync(loginData.UserName);
+            PayPadDto? paypad = await _payPadBL.GetPaypadByUsernameAsync(loginData.UserName);
             if(paypad == null || paypad.Username == null) return false;
 
             paypad.Pwd = await _payPadBL.GetPaypadPasswordAsync(paypad.Username);

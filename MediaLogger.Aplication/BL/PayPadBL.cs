@@ -23,7 +23,14 @@ namespace MediaLogger.Application.BL
             _paypadRepository = payPadRepository;
         }
 
-        public async Task<PayPadDto?> GetByUsernameAsync(string? username)
+        public async Task<PayPadDto?> GetPaypadByIdAsync(int id)
+        {
+            var paypad = _mapper.Map<PayPadDto>((await _paypadRepository.GetAllAsync()).Where(p => p.ID == id).FirstOrDefault());
+
+            return paypad;
+        }
+
+        public async Task<PayPadDto?> GetPaypadByUsernameAsync(string? username)
         {
             var paypad = _mapper.Map<PayPadDto>((await _paypadRepository.GetAllAsync()).Where(p => p.USERNAME == username).FirstOrDefault());
             
@@ -32,7 +39,7 @@ namespace MediaLogger.Application.BL
 
         public async Task<string?> GetPaypadPasswordAsync(string username)
         {
-            var paypad = await this.GetByUsernameAsync(username);
+            var paypad = await this.GetPaypadByUsernameAsync(username);
             if (paypad == null) throw new Exception("No se encontró paypad");
 
             return await _paypadRepository.GetPaypadPasswordAsync(Convert.ToInt32(paypad.Id));
