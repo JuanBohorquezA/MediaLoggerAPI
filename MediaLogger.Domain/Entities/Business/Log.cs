@@ -9,7 +9,7 @@ namespace MediaLogger.Domain.Entities.Business
 {
     public class Log
     {
-        public int ID { get; set; }
+        public long ID { get; set; }
         public int ID_PAYPAD { get; set; }
         public string? LOG_TYPE { get; set; }
         public string? PAYPAD { get; set; }
