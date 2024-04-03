@@ -17,6 +17,8 @@
 
         public static string BUSINESS_SP_GETLOGS { get { return "[SP_GetLog]"; } }
         public static string BUSINESS_SP_CREATELOGS { get { return "[SP_CreateLog]"; } }
+        public static string BUSINESS_SP_UPDATELOGS { get { return "[SP_UpdateLog]"; } }
+
 
     }
 }

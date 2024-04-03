@@ -18,9 +18,9 @@ namespace MediaLoggerAPI.Controllers
     public class MediaLoggerController : BaseController
     {
         private readonly IPayPadBL _payPadBL;
-        private readonly ILogBL _log;
+        private readonly ILogManager _log;
         private readonly ITokenBL _token;
-        public MediaLoggerController(IPayPadBL payPadBL, ILogBL log, ITokenBL token)
+        public MediaLoggerController(IPayPadBL payPadBL, ILogManager log, ITokenBL token)
         {
             _payPadBL = payPadBL;
             _log = log;
@@ -40,13 +40,12 @@ namespace MediaLoggerAPI.Controllers
         {
             try
             {
-
                 var username = _token.GetNameFromToken(Jwt);
                 PayPadDto? Paypad = await _payPadBL.GetPaypadByUsernameAsync(username);
 
-                Log? log = await _log.InsertLog(Log, Paypad.Id ,Paypad?.Username);
+                Log? log = await _log.LogService(Log, Paypad.Id ,Paypad?.Username);
                
-                return await GetResponseAsync<object?>(HttpStatusCode.OK, ResponseMessage.OK("Log insertion"), null);
+                return await GetResponseAsync<object?>(HttpStatusCode.OK, ResponseMessage.OK("Log insertion"), log?.ID.ToString());
             }
             catch (Exception ex)
             {

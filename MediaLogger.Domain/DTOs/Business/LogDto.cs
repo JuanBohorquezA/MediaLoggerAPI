@@ -8,6 +8,7 @@ namespace MediaLogger.Domain.DTOs.Business
 {
     public class LogDto
     {
+        public long IdLog { get; set; }
         public int IdPaypad { get; set; }
         public string? LogType { get; set; }
         public string? Paypad { get; set; }

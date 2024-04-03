@@ -5,6 +5,7 @@ using MediaLogger.Application.Validation;
 using MediaLogger.Domain.Interfaces.Application;
 using MediaLogger.Domain.Interfaces.Application.Validations;
 using MediaLogger.Domain.Interfaces.Persistence;
+using MediaLogger.Domain.Managers;
 using MediaLogger.Persistence.SQLServer;
 using MediaLogger.Persistence.SQLServer.Business;
 
@@ -21,6 +22,7 @@ namespace MediaLoggerAPI.App_Start
 
             #region Application BL
 
+            services.AddScoped(typeof(ILogManager), typeof(LogManager));
             services.AddScoped(typeof(IAuthBL), typeof(AuthBL));
             services.AddScoped(typeof(IPayPadBL), typeof(PayPadBL));
             services.AddScoped(typeof(ILogBL), typeof(LogBL));

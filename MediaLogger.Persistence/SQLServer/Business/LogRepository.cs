@@ -42,5 +42,16 @@ namespace MediaLogger.Persistence.SQLServer.Business
 
             return logR;
         }
+
+        public async Task<Log?> UpdateLogAsync(LogDto logDto)
+        {
+            using var conn = new SqlConnection(_dataBase);
+            Log? logR = (await conn.QueryAsync<Log>(Procedures.BUSINESS_SP_UPDATELOGS, param: logDto, commandType: CommandType.StoredProcedure)).FirstOrDefault();
+
+            await conn.CloseAsync();
+            await conn.DisposeAsync();
+
+            return logR;
+        }
     }
 }

@@ -12,5 +12,7 @@ namespace MediaLogger.Domain.Interfaces.Persistence
     {
         Task<IEnumerable<Log>> GetLogsAsync(GetLogDto getLog);
         Task<Log?> CreateLogAsync(LogDto logDto);
+        Task<Log?> UpdateLogAsync(LogDto logDto);
+
     }
 }

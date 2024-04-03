@@ -8,10 +8,8 @@ using System.Threading.Tasks;
 
 namespace MediaLogger.Domain.Interfaces.Application
 {
-    public interface ILogBL
+    public interface ILogManager
     {
-        public Task<Log?> UpdateLog(SaveLogDto reqLog, int IdPaypad, string? Paypad);
-        public Task<Log?> InsertLog(SaveLogDto reqLog, int IdPaypad, string? Paypad);
-        public Task<List<string?>?> GetLogs(GetLogDto getLog);
+        public Task<Log?> LogService(SaveLogDto reqLog, int IdPaypad, string? Paypad);
     }
 }

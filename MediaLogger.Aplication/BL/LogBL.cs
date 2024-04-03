@@ -21,9 +21,6 @@ namespace MediaLogger.Aplication.BL
         }
         public async Task<Log?> InsertLog(SaveLogDto reqLog,int IdPaypad, string? Paypad)
         {
-            if (string.IsNullOrEmpty(reqLog.Content)) throw new Exception(ResponseMessage.EMPTYFIELDS);
-            if(!Enum.GetNames(typeof(ETypeLogReq)).Any(x => x == reqLog.Logtype)) throw new Exception(ResponseMessage.Error($"'{reqLog.Logtype}' doesn't exist in the enumerable"));
-
             var logDto = new LogDto
             {
                 IdPaypad = IdPaypad,
@@ -33,7 +30,21 @@ namespace MediaLogger.Aplication.BL
                 DateCreated = DateTime.Now,
             };
             Log? logInserted = await _logRepository.CreateLogAsync(logDto);
-            if (logInserted == null) throw new Exception(ResponseMessage.Error($"log could not inserted"));
+            return logInserted;
+        }
+        public async Task<Log?> UpdateLog(SaveLogDto reqLog, int IdPaypad, string? Paypad)
+        {
+            long idLog = long.TryParse(reqLog.idLog, out long parsedIdLog) ? parsedIdLog : -1;
+            var logDto = new LogDto
+            {
+                IdLog = idLog,
+                IdPaypad = IdPaypad,
+                LogType = reqLog.Logtype.ToString(),
+                Paypad = Paypad,
+                Log = reqLog.Content,
+                DateCreated = DateTime.Now,
+            };
+            Log? logInserted = await _logRepository.UpdateLogAsync(logDto);
             return logInserted;
         }
 
@@ -48,5 +59,7 @@ namespace MediaLogger.Aplication.BL
             return log;
             
         }
+
+       
     }
 }
