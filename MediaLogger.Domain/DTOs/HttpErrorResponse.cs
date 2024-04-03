@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Text.Json;
 
-namespace Dashboard.Domain.DTOs
+namespace MediaLogger.Domain.DTOs
 {
     /// <summary>
     /// Http Error Generic Response 

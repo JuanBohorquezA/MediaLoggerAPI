@@ -1,4 +1,4 @@
-﻿using Dashboard.Domain.DTOs;
+﻿using MediaLogger.Domain.DTOs;
 using MediaLogger.Aplication.BL;
 using MediaLogger.Application.BL;
 using MediaLogger.Domain;
@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using System.Net;
 using System.Text;
+using MediaLoggerAPI.Filters.AuthValidator;
 
 namespace MediaLoggerAPI.Controllers
 {

@@ -1,4 +1,4 @@
-﻿using Dashboard.Domain.Variables;
+﻿using MediaLogger.Domain.Variables;
 using MediaLogger.Domain.Entities.Business;
 using MediaLogger.Domain.Variables;
 using Microsoft.Extensions.Configuration;

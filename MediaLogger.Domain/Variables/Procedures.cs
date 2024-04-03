@@ -1,4 +1,4 @@
-﻿namespace Dashboard.Domain.Variables
+﻿namespace MediaLogger.Domain.Variables
 {
     public static class Procedures
     {

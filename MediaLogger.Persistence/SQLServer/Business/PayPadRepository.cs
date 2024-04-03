@@ -1,8 +1,7 @@
 ﻿using Dapper;
-using Dashboard.Domain.Variables;
+using MediaLogger.Domain.Variables;
 using MediaLogger.Domain.Entities.Business;
 using MediaLogger.Domain.Interfaces.Persistence;
-using MediaLogger.Domain.Variables;
 using Microsoft.Extensions.Configuration;
 using System.Data;
 using System.Data.SqlClient;

@@ -11,6 +11,8 @@ namespace MediaLogger.Domain
         public static string EMPTYFIELDS { get { return "Complete all the fields"; } }
 
         public static string UNAUTHORIZED = "UNAUTHORIZED";
+        public static string BADREQUEST = "BAD REQUEST";
+        public static string INTERNALSERVERERROR= "INTERNAL SERVER ERROR";
         public static string OK(string? Message)
         {
             return $"{Message} has been successfully";
@@ -23,7 +25,7 @@ namespace MediaLogger.Domain
         {
             return $"You are not authorized, {Message}"; 
         }
-        public static string INTERNALSERVERERROR(string? Message)
+        public static string INTERNALSERVERERROR_MESSAGE(string? Message)
         {
             return $"Error, {Message}";
         }

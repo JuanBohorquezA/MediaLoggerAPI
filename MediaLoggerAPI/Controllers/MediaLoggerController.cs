@@ -1,15 +1,16 @@
-﻿using Dashboard.Domain.DTOs;
+﻿using MediaLogger.Domain.DTOs;
 using MediaLogger.Aplication.BL;
 using MediaLogger.Domain;
-using MediaLogger.Domain.DTOs;
 using MediaLogger.Domain.DTOs.Business;
 using MediaLogger.Domain.Entities.Business;
 using MediaLogger.Domain.Enumerables;
 using MediaLogger.Domain.Interfaces.Application;
 using MediaLoggerAPI.Filters;
+using MediaLoggerAPI.Filters.BLValidator;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using MediaLoggerAPI.Filters.AuthValidator;
 
 namespace MediaLoggerAPI.Controllers
 {
@@ -32,6 +33,7 @@ namespace MediaLoggerAPI.Controllers
         [HttpPost]
         [Route("SaveLog")]
         [ValidateJwtFilter]
+        [ValidateSaveLogReq]
         [ProducesResponseType(typeof(HttpResponse<string>), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(HttpResponse<string>), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(HttpResponse<string>), (int)HttpStatusCode.Unauthorized)]
@@ -42,9 +44,7 @@ namespace MediaLoggerAPI.Controllers
             {
                 var username = _token.GetNameFromToken(Jwt);
                 PayPadDto? Paypad = await _payPadBL.GetPaypadByUsernameAsync(username);
-
                 Log? log = await _log.LogService(Log, Paypad.Id ,Paypad?.Username);
-               
                 return await GetResponseAsync<object?>(HttpStatusCode.OK, ResponseMessage.OK("Log insertion"), log?.ID.ToString());
             }
             catch (Exception ex)
