@@ -16,6 +16,8 @@ using Newtonsoft.Json.Linq;
 using System.Net;
 using System.Text;
 using MediaLoggerAPI.Filters.AuthValidator;
+using MediaLogger.Domain.Interfaces;
+using MediaLoggerAPI.Filters.BLValidator;
 
 namespace MediaLoggerAPI.Controllers
 {
@@ -26,10 +28,12 @@ namespace MediaLoggerAPI.Controllers
     {
 
         private readonly ILogBL _log;
+        private readonly IVideoBL _videoBL;
         private readonly IPayPadBL _payPadBL;
-        public MediaRetriverController( ILogBL log, IPayPadBL payPadBL)
+        public MediaRetriverController( ILogBL log, IVideoBL videoBL,  IPayPadBL payPadBL)
         {
             _log = log;
+            _videoBL = videoBL;
             _payPadBL = payPadBL;
         }
         [AllowAnonymous]
@@ -40,7 +44,7 @@ namespace MediaLoggerAPI.Controllers
         [ProducesResponseType(typeof(HttpResponse<string>), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(HttpResponse<string>), (int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType(typeof(HttpErrorResponse), (int)HttpStatusCode.InternalServerError)]
-        public async Task<IActionResult?> DownloadLog([FromHeader(Name = "X-DOWNLOAD-API-KEY")] string ApiKey, GetLogDto getLog)
+        public async Task<IActionResult?> DownloadLog([FromHeader(Name = "X-DOWNLOAD-API-KEY")] string ApiKey, [FromBody] GetLogDto getLog)
         {
             try
             {
@@ -56,6 +60,31 @@ namespace MediaLoggerAPI.Controllers
                 return await GetResponseAsync<object?>(HttpStatusCode.BadRequest, ex.Message, null);
             }
         }
+
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("DownloadVideo")]
+        [ValidateApiKeyFilter("GetVideo_Api_Key")]
+        [ValidateGetVideo]
+        [ProducesResponseType(typeof(HttpResponse<string>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(HttpResponse<string>), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(HttpResponse<string>), (int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(HttpErrorResponse), (int)HttpStatusCode.InternalServerError)]
+        public async Task<IActionResult?> DownloadVideo([FromHeader(Name = "X-DOWNLOAD-API-KEY")] string ApiKey, [FromBody] string videoName)
+        {
+            try
+            {
+                var source = await _videoBL.DownloadVideo(videoName);
+                return File(source, "video/mp4", $"{videoName}.mp4");
+            }
+            catch (Exception ex)
+            {
+                await EventLogger.AsyncSaveLog(ETypeLogApp.Error, $"GetLog, Error: {ex.Message}");
+                return await GetResponseAsync<object?>(HttpStatusCode.BadRequest, ex.Message, null);
+            }
+        }
+
+
         #region Download Logs methods
         private async Task<string> GetName(GetLogDto getLog)
         {

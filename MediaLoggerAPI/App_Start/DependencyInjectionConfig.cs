@@ -2,6 +2,7 @@
 using MediaLogger.Aplication.BL;
 using MediaLogger.Application.BL;
 using MediaLogger.Application.Validation;
+using MediaLogger.Domain.Interfaces;
 using MediaLogger.Domain.Interfaces.Application;
 using MediaLogger.Domain.Interfaces.Application.Validations;
 using MediaLogger.Domain.Interfaces.Persistence;
@@ -22,6 +23,7 @@ namespace MediaLoggerAPI.App_Start
 
             #region Application BL
 
+            services.AddScoped(typeof(IVideoBL), typeof(VideoBL));
             services.AddScoped(typeof(ILogManager), typeof(LogManager));
             services.AddScoped(typeof(IAuthBL), typeof(AuthBL));
             services.AddScoped(typeof(IPayPadBL), typeof(PayPadBL));

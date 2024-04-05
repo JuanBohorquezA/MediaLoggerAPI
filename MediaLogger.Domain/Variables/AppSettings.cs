@@ -12,6 +12,7 @@ namespace MediaLogger.Domain.Variables
         public static string CORS_NAME { get { return "MediaLoggerSecurityPolicy"; } }
         public static string Login_Api_Key { get { return "Api-Key:Login-Key"; }  }
         public static string GetLog_Api_Key { get { return "Api-Key:GetLog-key"; } }
+        public static string GetVideo_Api_Key { get { return "Api-Key:GetVideo-key"; } }
         public static string JwtSecret { get { return "Jwt:Secret"; } }
         public static string VideosDirectory { get { return "Directories:Videos"; } }
         public static string connectionMongo { get {return "ConnectionStrings:MongoDb"; } }

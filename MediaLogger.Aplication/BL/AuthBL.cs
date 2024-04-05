@@ -21,8 +21,8 @@ namespace MediaLogger.Application.BL
         public async Task<bool> Login(Login loginData)
         {
             if (string.IsNullOrEmpty(loginData.UserName) || string.IsNullOrEmpty(loginData.Password)) throw new Exception(ResponseMessage.EMPTYFIELDS);
-            PayPadDto? paypad = await _payPadBL.GetPaypadByUsernameAsync(loginData.UserName);
-            if(paypad == null || paypad.Username == null) return false;
+                PayPadDto? paypad = await _payPadBL.GetPaypadByUsernameAsync(loginData.UserName);
+            if(paypad == null || paypad.Username == null) throw new Exception(ResponseMessage.Error("Username or password are incorrect"));
 
             paypad.Pwd = await _payPadBL.GetPaypadPasswordAsync(paypad.Username);
             var paypadResult = _payPadValidation.ValidatePassword(paypad, loginData.Password);

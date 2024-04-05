@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using MediaLoggerAPI.Filters.AuthValidator;
+using MediaLogger.Domain.Interfaces;
 
 namespace MediaLoggerAPI.Controllers
 {
@@ -20,11 +21,13 @@ namespace MediaLoggerAPI.Controllers
     {
         private readonly IPayPadBL _payPadBL;
         private readonly ILogManager _log;
+        private readonly IVideoBL _videoBL;
         private readonly ITokenBL _token;
-        public MediaLoggerController(IPayPadBL payPadBL, ILogManager log, ITokenBL token)
+        public MediaLoggerController(IPayPadBL payPadBL, ILogManager log, IVideoBL videoBL, ITokenBL token)
         {
             _payPadBL = payPadBL;
             _log = log;
+            _videoBL = videoBL;
            _token = token;
         }
 
@@ -54,7 +57,32 @@ namespace MediaLoggerAPI.Controllers
             }
         }
 
-
+        
+        
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("SaveVideo")]
+        [ValidateJwtFilter]
+        [ValidateSaveVideoReq]
+        [ProducesResponseType(typeof(HttpResponse<string>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(HttpResponse<string>), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(HttpResponse<string>), (int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(HttpErrorResponse), (int)HttpStatusCode.InternalServerError)]
+        public async Task<IActionResult?> SaveVideo([FromHeader(Name = "JWT")] string Jwt, IFormFile videoFile)
+        {
+            try
+            {
+                var username = _token.GetNameFromToken(Jwt);
+                PayPadDto? Paypad = await _payPadBL.GetPaypadByUsernameAsync(username);
+                await _videoBL.UploadVideo(videoFile);
+                return await GetResponseAsync<object?>(HttpStatusCode.OK, ResponseMessage.OK("Video has been uploaded"),null);
+            }
+            catch (Exception ex)
+            {
+                await EventLogger.AsyncSaveLog(ETypeLogApp.Error, $"SaveVideo, Error: {ex.Message}");
+                return await GetResponseAsync<object?>(HttpStatusCode.BadRequest, ex.Message, null);
+            }
+        }
 
 
 
